@@ -3,7 +3,7 @@ package grps
 import "chatss/pkg/msgs"
 
 type IGroupService interface {
-	CreateGroup(grp Group)
+	CreateGroup(grpName, adminID string) string
 	AddUserToGroup(userID, grpID string)
 	SendGroupMessage(grpID, senderID string, msg msgs.Message)
 	GetGroupMessages(grpID string) []msgs.Message
@@ -21,10 +21,12 @@ func NewGroupService(mS msgs.IMessageService) IGroupService {
 	}
 }
 
-func (gs *groupService) CreateGroup(grp Group) {
+func (gs *groupService) CreateGroup(groupName, adminID string) string {
 
+	grp := NewGroup(groupName, adminID)
 	grp.setChatID()
 	gs.dao[grp.id] = grp
+	return grp.id
 
 }
 func (gs *groupService) AddUserToGroup(userID, grpID string) {

@@ -14,44 +14,39 @@ func main() {
 
 	uService := users.NewUserService(mService)
 
-	nithin := users.NewUser("Nithin")
-	alpit := users.NewUser("alpit")
-	santosh := users.NewUser("santosh")
+	nithin := uService.CreateUser("Nithin")
+	alpit := uService.CreateUser("alpit")
+	santosh := uService.CreateUser("santosh")
 
-	uService.CreateUser(nithin)
-	uService.CreateUser(alpit)
-	uService.CreateUser(santosh)
-
-	uService.SendFriendRequest(nithin.GetID(), alpit.GetID())
-	uService.ApproveFriendReq(alpit.GetID(), nithin.GetID())
-	uService.SendFriendRequest(nithin.GetID(), santosh.GetID())
-	uService.RejectFriendReq(santosh.GetID(), nithin.GetID())
+	uService.SendFriendRequest(nithin, alpit)
+	uService.ApproveFriendReq(alpit, nithin)
+	uService.SendFriendRequest(nithin, santosh)
+	uService.RejectFriendReq(santosh, nithin)
 
 	msg1 := msgs.NewMessage("hello alpit")
 	msg2 := msgs.NewMessage("you write bad code")
 
-	uService.Send1to1Message(nithin.GetID(), alpit.GetID(), msg1)
-	uService.Send1to1Message(nithin.GetID(), alpit.GetID(), msg2)
+	uService.Send1to1Message(nithin, alpit, msg1)
+	uService.Send1to1Message(nithin, alpit, msg2)
 
 	msg3 := msgs.NewMessage("so do you")
 
-	uService.Send1to1Message(alpit.GetID(), nithin.GetID(), msg3)
+	uService.Send1to1Message(alpit, nithin, msg3)
 
-	grp1 := grps.NewGroup("bellandur", nithin.GetID())
-	gService.CreateGroup(grp1)
+	grp1 := gService.CreateGroup("bellandur", nithin)
 
-	gService.AddUserToGroup(alpit.GetID(), grp1.GetID())
+	gService.AddUserToGroup(alpit, grp1)
 
 	msg4 := msgs.NewMessage("please dont get added")
-	gService.SendGroupMessage(grp1.GetID(), santosh.GetID(), msg4)
+	gService.SendGroupMessage(grp1, santosh, msg4)
 
 	msg5 := msgs.NewMessage("please  get added nithin")
-	gService.SendGroupMessage(grp1.GetID(), nithin.GetID(), msg5)
+	gService.SendGroupMessage(grp1, nithin, msg5)
 
 	msg6 := msgs.NewMessage("please  get added alput")
-	gService.SendGroupMessage(grp1.GetID(), alpit.GetID(), msg6)
+	gService.SendGroupMessage(grp1, alpit, msg6)
 
-	msgs11 := gService.GetGroupMessages(grp1.GetID())
+	msgs11 := gService.GetGroupMessages(grp1)
 	for _, m := range msgs11 {
 		fmt.Println(m.Text, m.Sender)
 

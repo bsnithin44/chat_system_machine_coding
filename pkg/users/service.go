@@ -5,7 +5,7 @@ import (
 )
 
 type IUserService interface {
-	CreateUser(user User)
+	CreateUser(name string) string
 	UpdateUser(id, name string)
 	DeleteUser(id string)
 	SendFriendRequest(user1ID, user2ID string)
@@ -27,11 +27,12 @@ func NewUserService(msgservice msgs.IMessageService) IUserService {
 	}
 }
 
-func (us *userService) CreateUser(usr User) {
+func (us *userService) CreateUser(name string) string {
 
-	// usr := NewUser(name)
-
+	usr := NewUser(name)
 	us.dao[usr.id] = usr
+
+	return usr.id
 }
 
 func (us *userService) UpdateUser(id, name string) {
